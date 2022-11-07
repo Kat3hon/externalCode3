@@ -2,12 +2,13 @@
 #include "..\dialog.h"
 
 TEST (solver, good) {
-    int ans = 8+9-(2+3)+12;
-    std::string str = "8+9-(2+3)+1231231512-125125";
+    BigInt a("1234567"), b("123000"), c("12345"), d("51221");
+    BigInt result = a+b-(c+d);
+    std::string str = "1234567+123000 - (12345 + 51221)";
     ConvertToPN pn;
     pn.convert(str);
-    solve(str, std::cout);
-    ASSERT_EQ("+24", str);
+    BigInt res = solve(str, std::cout);
+    ASSERT_EQ(result, res);
 }
 
 

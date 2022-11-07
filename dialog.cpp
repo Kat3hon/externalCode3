@@ -11,11 +11,11 @@ void getValue(T& value, std::istream& c) {
         c.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         throw std::runtime_error("End of file!");
     }
-    return;
 }
 
 BigInt solve_opz(const std::string& str) {
     std::stringstream s(str);
+    std::cout << str << std::endl;
     std::stack<BigInt> opz;
     BigInt value;
     char sign;
@@ -54,11 +54,15 @@ void erase_spaces(std::string& str) {
     str.erase(end_pos, str.end());
 }
 
-void solve(std::string& str, std::ostream& c) {
+BigInt solve(std::string& str, std::ostream& c) {
     erase_spaces(str);
     ConvertToPN opn;
     opn.convert(str);
-    c << std::showpos << solve_opz(opn.getStrOut());
+    std::string tmp = opn.getStrOut();
+    erase_spaces(tmp);
+    BigInt res = solve_opz(tmp);
+    c << std::showpos << res;
+    return res;
 }
 
 void menu() {

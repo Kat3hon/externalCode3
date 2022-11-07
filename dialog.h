@@ -4,7 +4,8 @@
 
 template <typename T>
 void getValue(T& value, std::istream& c);
-void solve(std::string& str, std::ostream& c);
+BigInt solve(std::string& str, std::ostream& c);
 BigInt solve_opz(const std::string& str);
+void erase_spaces(std::string& str);
 
 void menu();

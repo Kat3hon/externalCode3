@@ -58,21 +58,20 @@ void solve(std::string& str, std::ostream& c) {
     erase_spaces(str);
     ConvertToPN opn;
     opn.convert(str);
-    c << solve_opz(opn.getStrOut());
+    c << std::showpos << solve_opz(opn.getStrOut());
 }
 
 void menu() {
     std::fstream inf;
     std::fstream outf;
 
-
     std::cout << "Choose input stream: console (0) or file (1)" << std::endl;
-    size_t ans_i;
-    getValue(ans_i, std::cin);
+    size_t ansm;
+    getValue(ansm, std::cin);
     std::cout << std::endl;
 
     std::string ans;
-    if (ans_i == 1) {
+    if (ansm == 1) {
         std::cout << "Input an input file name: ";
         std::string inp_file_name;
         getValue(inp_file_name, std::cin);
@@ -88,16 +87,17 @@ void menu() {
     }
 
     std::cout << std::endl << "Choose output stream console (0) or file (1):" << std::endl;
-    size_t ans_o;
-    getValue(ans_o, std::cin);
+    getValue(ansm, std::cin);
     std::cout << std::endl;
 
-    if (ans_o == 1) {
+    if (ansm == 1) {
         std::cout << "Input an output file name: ";
         std::string out_file_name;
         getValue(out_file_name, std::cin);
         std::cout << std::endl;
         outf.open(out_file_name);
+        if (!outf)
+            throw std::runtime_error("Can not open output file.");
         solve(ans, outf);
     }
     else solve(ans, std::cout);

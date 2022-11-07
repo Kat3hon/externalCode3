@@ -116,16 +116,16 @@ std::string BigInt::additional_code() const {
 
 // перегрузка оператора +=
 BigInt& BigInt::operator+=(const BigInt & bi) {
-    std::cout << "+=\n";
+    //std::cout << "+=\n";
     if (this->empty() || bi.empty())
         throw std::invalid_argument("this operation cannot be called with empty arguments");
 
     // сложение производится в доп коде
     // так что делаем a и b в доп коде
-    std::cout << "a, b copy\n";
+    //std::cout << "a, b copy\n";
     BigInt a = this->additional_BI();
     BigInt b = bi.additional_BI();
-    std::cout << "res\n";
+    //std::cout << "res\n";
     BigInt res;
 
     // инициализируем res.arr
@@ -239,13 +239,13 @@ BigInt& BigInt::operator+=(const BigInt & bi) {
         throw std::logic_error("error in \'if\' block of addition");
     }
 
-    std::cout << "res add\n";
+    //std::cout << "res add\n";
     if (res.arr[0]) {
         res = res.additional_BI();
     }
 
     *this = std::move(res);
-    std::cout << "end+=\n";
+    //std::cout << "end+=\n";
     return *this;
 }
 
@@ -270,7 +270,7 @@ BigInt operator+(const BigInt& a, const BigInt& b) {
 
 // перегрузка оператора -=
 BigInt& BigInt::operator-=(const BigInt & bi) {
-    std::cout << "-=\n";
+    //std::cout << "-=\n";
     if (this->empty() || bi.empty())
         throw std::invalid_argument("this operation cannot be called with empty arguments");
     BigInt _copy = bi;
@@ -278,7 +278,7 @@ BigInt& BigInt::operator-=(const BigInt & bi) {
         _copy.arr[0] = 0;
     else
         _copy.arr[0] = !_copy.arr[0];
-    std::cout << "end-=\n";
+    //std::cout << "end-=\n";
     return (*this += _copy);
 }
 BigInt operator-(const BigInt& a, const BigInt& b) {
@@ -300,9 +300,9 @@ BigInt BigInt::operator++(int) {
 }
 // префикс
 BigInt& BigInt::operator--() {
-    std::cout << "--\n";
+    //std::cout << "--\n";
     *this -= 1;
-    std::cout << "end--\n";
+    //std::cout << "end--\n";
     return *this;
 }
 // постфикс

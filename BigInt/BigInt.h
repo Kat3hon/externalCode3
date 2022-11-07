@@ -37,10 +37,10 @@ public:
 
     // constructors
     BigInt() {
-        std::cout << "constructor" << std::endl;
+        //std::cout << "constructor" << std::endl;
     }
     BigInt(const long & x) {
-        std::cout << "constructor" << std::endl;
+        //std::cout << "constructor" << std::endl;
         size_t l = std::to_string(std::abs(x)).length();
 
         length = l;
@@ -51,7 +51,7 @@ public:
             arr[length-i] = y%10;
     }
     BigInt(const std::string & x) {
-        std::cout << "constructor" << std::endl;
+        //std::cout << "constructor" << std::endl;
         // проверка строки
         if (!is_integer(x))
             throw std::invalid_argument("your line to conversion in BI is not integer");
@@ -76,7 +76,7 @@ public:
 
     // copy constructor
     BigInt(const BigInt & bi) : length(bi.length) {
-        std::cout << "copy constructor" << std::endl;
+        //std::cout << "copy constructor" << std::endl;
         try {
             arr = new unsigned char [length+1];
         } catch (std::bad_alloc & ba) {
@@ -89,14 +89,14 @@ public:
     }
     // move constructor
     BigInt(BigInt && bi)  noexcept : length(bi.length), arr(bi.arr) {
-        std::cout << "move constructor" << std::endl;
+        //std::cout << "move constructor" << std::endl;
         bi.length = 0;
         bi.arr = nullptr;
     }
 
     // destructor
     ~BigInt() {
-        std::cout << "destructor" << std::endl;
+        //std::cout << "destructor" << std::endl;
         delete[] arr;
     }
 
@@ -108,7 +108,7 @@ public:
     }
     */
     BigInt & operator=(const BigInt & bi) {
-        std::cout << "assigment" << std::endl;
+        //std::cout << "assigment" << std::endl;
         if (&bi == this)
             return *this;
         length = bi.length;
@@ -118,7 +118,7 @@ public:
         return *this;
     }
     BigInt & operator=(BigInt && bi)  noexcept {
-        std::cout << "move assigment" << std::endl;
+        //std::cout << "move assigment" << std::endl;
         if (this != &bi) {
             delete[] arr;
             this->arr = bi.arr;

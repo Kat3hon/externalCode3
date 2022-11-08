@@ -177,5 +177,6 @@ BigInt operator+(const BigInt&, const BigInt&);
 BigInt operator-(const BigInt&, const BigInt&);
 bool operator<(const BigInt&, const BigInt&);
 bool operator>(const BigInt&, const BigInt&);
+bool operator==(const BigInt&, const BigInt&);
 
 #endif //LAB3_SEM3_BIGINT_H

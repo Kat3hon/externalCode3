@@ -391,3 +391,18 @@ bool operator<(const BigInt& a, const BigInt& b) {
 bool operator>(const BigInt& a, const BigInt& b) {
     return b < a;
 }
+
+bool operator==(const BigInt& a, const BigInt& b) {
+    std::string s1 = a.to_string();
+    std::string s2 = b.to_string();
+    if (s1[0] != s2[0])
+        return false;
+
+    if (s1.size() != s2.size())
+        return false;
+
+    for (size_t i = 0; i < s1.size(); ++i)
+        if (s1[i] != s2[i])
+            return false;
+    return true;
+}

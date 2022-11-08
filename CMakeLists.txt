@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.23)
 project(externalCode3)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
-set(SOURCE main.cpp dialog.cpp)
+set(SOURCE main.cpp dialog.cpp help.cpp)
 
 include_directories(BigInt)
 add_subdirectory(BigInt)

@@ -1,38 +1,21 @@
 #include "dialog.h"
 
-template <typename T>
-void getValue(T& value, std::istream& c) {
-    c >> value;
-    if (c.fail()) {
-        c.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        throw std::invalid_argument("Invalid input argument.");
-    }
-    if (c.eof()) {
-        c.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        throw std::runtime_error("End of file!");
-    }
-}
-
 BigInt solve_opz(const std::string& str) {
     std::stringstream s(str);
-    std::cout << str << std::endl;
     std::stack<BigInt> opz;
     BigInt value;
     char sign;
     while (!s.eof()) {
         try {
-            while (s >> value)
+            while (!s.eof() && s >> value) {
                 opz.push(value);
+            }
         }
         catch (const std::exception& ex) {
-            s.clear();
             s.unget();
             s>>sign;
-            if (!s.eof())
-                s.get();
-            if (opz.size() < 2) {
-                throw std::runtime_error("The equation is not reverse polish notation. Too mush variables.");
-            }
+            if (opz.size() < 2)
+                throw std::runtime_error("The equation is not reverse polish notation. You should input more variables.");
             BigInt right = opz.top();
             opz.pop();
             BigInt left = opz.top();
@@ -42,6 +25,9 @@ BigInt solve_opz(const std::string& str) {
                 case '-':   opz.push(left - right); break;
                 default: throw std::runtime_error("Undefined operator in reverse polish notation.");
             }
+            if (s>>sign)
+                s.unget();
+            else return opz.top();
         }
     }
     if (opz.size() != 1)
@@ -49,18 +35,10 @@ BigInt solve_opz(const std::string& str) {
     return opz.top();
 }
 
-void erase_spaces(std::string& str) {
-    std::string::iterator end_pos = std::remove(str.begin(), str.end(), ' ');
-    str.erase(end_pos, str.end());
-}
-
 BigInt solve(std::string& str, std::ostream& c) {
-    erase_spaces(str);
     ConvertToPN opn;
     opn.convert(str);
-    std::string tmp = opn.getStrOut();
-    erase_spaces(tmp);
-    BigInt res = solve_opz(tmp);
+    BigInt res = solve_opz(opn.getStrOut());
     c << std::showpos << res;
     return res;
 }
@@ -69,35 +47,37 @@ void menu() {
     std::fstream inf;
     std::fstream outf;
 
-    std::cout << "Choose input stream: console (0) or file (1)" << std::endl;
     size_t ansm;
-    getValue(ansm, std::cin);
-    std::cout << std::endl;
+    menu_stream(ansm, "Choose input stream: console (0) or file (1)");
+    std::cin.ignore();
 
     std::string ans;
-    if (ansm == 1) {
-        std::cout << "Input an input file name: ";
-        std::string inp_file_name;
-        getValue(inp_file_name, std::cin);
-        std::cout << std::endl;
-        inf.open(inp_file_name);
-        if (!inf)
-            throw std::runtime_error("Can not open input file.");
-        inf >> ans;
-    }
-    else {
-        std::cout << "Input an expression (it only can constist '+', '-', '(' or ')'):" << std::endl;
-        getValue(ans, std::cin);
-    }
+    std::string errmsg = "";
+    do {
+        std::cout << errmsg << std::endl;
+        if (ansm == 1) {
+            std::cout << "Input an input file name:" << std::endl;
+            std::string inp_file_name;
+            std::getline(std::cin, inp_file_name);
+            inf.open(inp_file_name);
+            if (!inf)
+                throw std::runtime_error("Can not open input file.");
+            inf >> ans;
+        } else {
+            std::cout << "Input an expression (it only can constist of '+', '-', '(' or ')' ):" << std::endl;
+            std::getline(std::cin, ans);
+        }
+        erase_spaces(ans);
+        errmsg = "Wrong expression. Try again.";
+    } while (isWrongExpression(ans));
 
-    std::cout << std::endl << "Choose output stream console (0) or file (1):" << std::endl;
-    getValue(ansm, std::cin);
-    std::cout << std::endl;
+    menu_stream(ansm, "Choose output stream console (0) or file (1):");
+    std::cin.ignore();
 
     if (ansm == 1) {
         std::cout << "Input an output file name: ";
         std::string out_file_name;
-        getValue(out_file_name, std::cin);
+        std::getline(std::cin, out_file_name);
         std::cout << std::endl;
         outf.open(out_file_name);
         if (!outf)
